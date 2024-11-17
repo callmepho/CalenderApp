@@ -1,9 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Cell } from "../Square/Cell";
+import { DropMenu } from "../DropMenu/DropMenu";
+import leftArrow from "./arrow-big-left-line.svg";
+import rightArrow from "./arrow-big-right-line.svg";
+import Image from "next/image";
 
-interface Date {
+export interface monthYear {
   year: number;
   month: number;
 }
@@ -55,15 +59,24 @@ export const Calender = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-5">
-      <h1 className="text-4xl font-bold flex gap-5">
-        <span className="cursor-pointer" onClick={prevMonth}>
-          {"<"}
-        </span>
-        {getMonthName(currentMonth.month) + " " + currentMonth.year}
-        <span className="cursor-pointer" onClick={nextMonth}>
-          {">"}
-        </span>
-      </h1>
+      <div className="flex gap-5 font-bold text-3xl">
+        <Image
+          className="cursor-pointer"
+          src={leftArrow}
+          alt="leftArrow"
+          onClick={prevMonth}
+        />
+        <DropMenu
+          currentMonth={currentMonth}
+          setCurrentMonth={setCurrentMonth}
+        />
+        <Image
+          className="cursor-pointer"
+          src={rightArrow}
+          alt="rightArrow"
+          onClick={nextMonth}
+        />
+      </div>
       <div className="grid grid-cols-7 w-1/2 gap-0">
         {weekDays.map((day) => (
           <h1 className="text-center" key={day}>
@@ -78,7 +91,7 @@ export const Calender = () => {
   );
 };
 
-const createCalender = ({ year, month }: Date) => {
+const createCalender = ({ year, month }: monthYear) => {
   const isLeapYear = (year: number) => {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   };
