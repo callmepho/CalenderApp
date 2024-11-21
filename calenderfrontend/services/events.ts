@@ -2,17 +2,22 @@ import instance from "./axios";
 
 export interface Event {
   name: string;
-  start: Date;
-  end: Date;
+  startDate: Date;
+  endDate: Date;
   location: string;
   label: string;
 }
 
 export class Events {
   public static async get(): Promise<Event[]> {
-    const events = await instance.get("/events");
+    const response = await instance.get("/events");
+    const events = response.data.map((event: any) => ({
+      ...event,
+      startDate: new Date(event.startDate),
+      endDate: new Date(event.endDate),
+    }));
     console.log(events);
-    return events.data;
+    return events;
   }
 
   public static async create(data: Event): Promise<any> {

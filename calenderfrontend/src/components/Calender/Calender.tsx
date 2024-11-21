@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Cell } from "../Square/Cell";
 import { DropMenu } from "../DropMenu/DropMenu";
 import leftArrow from "./arrow-big-left-line.svg";
 import rightArrow from "./arrow-big-right-line.svg";
 import Image from "next/image";
+import { useDisclosure } from "@mantine/hooks";
 
 export interface monthYear {
   year: number;
@@ -32,6 +33,7 @@ export const getMonthName = (month: number) => {
 
 export const Calender = () => {
   const [currentMonth, setCurrentMonth] = useState({ year: 2024, month: 0 });
+  const [dayArray, setDayArray] = useState<(number | null)[]>([]);
 
   const nextMonth = () => {
     if (currentMonth.month == 11) {
@@ -55,6 +57,10 @@ export const Calender = () => {
     }
   };
 
+  useEffect(() => {
+    setDayArray(createCalender(currentMonth));
+  }, [currentMonth]);
+
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
@@ -77,14 +83,19 @@ export const Calender = () => {
           onClick={nextMonth}
         />
       </div>
-      <div className="grid grid-cols-7 w-1/2 gap-0">
+      <div className="grid grid-cols-7 gap-0 w-full sm:w-3/4 md:w-3/4 lg:w-1/2">
         {weekDays.map((day) => (
           <h1 className="text-center" key={day}>
             {day}
           </h1>
         ))}
-        {createCalender(currentMonth).map((day, idx) => (
-          <Cell number={day} key={idx + "cell"} />
+        {dayArray.map((day, idx) => (
+          <Cell
+            day={day}
+            key={idx + "cell"}
+            month={currentMonth.month}
+            year={currentMonth.year}
+          />
         ))}
       </div>
     </div>
