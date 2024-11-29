@@ -7,9 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import minhanthonytat.calenderbackend.label.Label;
 
 @Entity
 @Table(name = "event")
@@ -40,14 +43,15 @@ public class Event {
 	@Setter
   private String location;
 
-  @Column
-	@Getter
-	@Setter
-  private String label;
+  @ManyToOne
+  @JoinColumn(name = "label")
+  @Getter
+  @Setter
+  private Label label;
 
   public Event(){}
 
-  public Event(String name, Date startDate, Date endDate, String location, String label){
+  public Event(String name, Date startDate, Date endDate, String location,Label label){
     this.name = name;
     this.startDate = startDate;
     this.endDate = endDate;

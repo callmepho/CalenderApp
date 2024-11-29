@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Event } from "../../../services/events";
 import { DateInput } from "@mantine/dates";
-import { EventsContext } from "@/app/context/EventsContextProvider";
 
 interface eventProps {
   data: Event[];
@@ -33,7 +32,7 @@ export const EventCard = ({ data }: eventCardProps) => {
       <h4>location: {data.location}</h4>
       <DateInput label="Start Date:" value={data.startDate} disabled />
       <DateInput label="End Date:" value={data.endDate} disabled />
-      <p>label: {data.label}</p>
+      <p>label: {data.label.name}</p>
     </div>
   );
 };

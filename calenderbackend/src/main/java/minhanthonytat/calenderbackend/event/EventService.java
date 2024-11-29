@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import minhanthonytat.calenderbackend.label.Label;
+import minhanthonytat.calenderbackend.label.LabelService;
 
 @Service
 @Transactional
@@ -15,6 +17,9 @@ public class EventService {
   
   @Autowired
   private EventRepository eventRepository;
+
+  @Autowired
+  private LabelService labelService;
 
   public List<Event> findAll(){
     return this.eventRepository.findAll();
@@ -35,15 +40,23 @@ public class EventService {
   }
 
   public Event create(EventCreateDTO data){
+
     String name = data.getName();
     Date startDate = data.getStartDate();
     Date endDate = data.getEndDate();
     String location = data.getLocation();
-    String label = data.getLabel();
+    Long labelId = data.getLabelId();
 
-    Event newEvent = new Event(name,startDate,endDate,location,label);
-    Event created = this.eventRepository.save(newEvent);
-    return created;
+    Optional<Label> foundLabel = this.labelService.findById(labelId);
+    
+    if(foundLabel.isPresent()){
+      Label label = foundLabel.get();
+      Event newEvent = new Event(name,startDate,endDate,location,label);
+      Event created = this.eventRepository.save(newEvent);
+      return created;
+    }
+    
+    return new Event();
   }
 
 
@@ -69,8 +82,11 @@ public class EventService {
         toUpdate.setLocation(data.getLocation());
       }
 
-      if(data.getLabel() != null){
-        toUpdate.setLabel(data.getLabel());
+      if(data.getLabelId() != null){
+        Optional<Label> foundLabel = this.labelService.findById(data.getLabelId());
+        if(foundLabel.isPresent()){
+          toUpdate.setLabel(foundLabel.get());
+        }
       }
 
       Event updatedEvent = this.eventRepository.save(toUpdate);

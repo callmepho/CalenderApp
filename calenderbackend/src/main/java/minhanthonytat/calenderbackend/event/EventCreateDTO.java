@@ -30,14 +30,6 @@ public class EventCreateDTO {
 
 	@Getter
 	@Setter
-  @NotBlank
-  private String label;
-
-  public EventCreateDTO(String name, Date startDate, Date endDate, String location, String label){
-    this.name = name;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.location = location;
-    this.label = label;
-  }
+  @NotNull
+  private Long labelId;
 }

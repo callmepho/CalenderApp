@@ -58,7 +58,12 @@ export const Cell = ({ day, month, year }: Day) => {
           onClose={closeForm}
           title={`Event on ${day}/${month + 1}/${year}`}
           centered>
-          <EventForm day={day} month={month} year={year} />
+          <EventForm
+            day={day}
+            month={month}
+            year={year}
+            closeForm={closeForm}
+          />
         </Modal>
       )}
     </>

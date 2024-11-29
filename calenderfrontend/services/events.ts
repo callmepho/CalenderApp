@@ -1,11 +1,21 @@
 import instance from "./axios";
+import { Label } from "./labels";
 
 export interface Event {
+  id: number;
   name: string;
   startDate: Date;
   endDate: Date;
   location: string;
-  label: string;
+  label: Label;
+}
+
+export interface EventCreateDTO {
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  location: string;
+  labelId: number;
 }
 
 export class Events {
@@ -20,7 +30,7 @@ export class Events {
     return events;
   }
 
-  public static async create(data: Event): Promise<any> {
+  public static async create(data: EventCreateDTO): Promise<any> {
     const event = await instance.post("/events", data);
     console.log(event);
     return event.status;

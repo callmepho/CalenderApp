@@ -2,6 +2,8 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { createContext } from "react";
 import { Events } from "../../../services/events";
+import { AxiosError } from "axios";
+import { Labels } from "../../../services/labels";
 
 export const EventsContext = createContext<any>(null);
 
@@ -13,14 +15,16 @@ export const EventsContextProvider: React.FC<EventsContextProviderProps> = ({
   children,
 }) => {
   const [events, setEvents] = useState<Events[]>([]);
+  const [labels, setLabels] = useState<Labels[]>([]);
+  const [dataError, setDataError] = useState<AxiosError | null>(null);
 
   const fetchData = async () => {
-    try {
-      const data = await Events.get();
-      setEvents(data);
-    } catch (e) {
-      console.error("Error fetching events:", e);
-    }
+    await Events.get()
+      .then((data) => setEvents(data))
+      .catch((e) => setDataError(e));
+    await Labels.get()
+      .then((data) => setLabels(data))
+      .catch((e) => setDataError(e));
   };
 
   useEffect(() => {
@@ -28,7 +32,7 @@ export const EventsContextProvider: React.FC<EventsContextProviderProps> = ({
   }, []);
 
   return (
-    <EventsContext.Provider value={{ events, fetchData }}>
+    <EventsContext.Provider value={{ events, labels, fetchData, dataError }}>
       {children}
     </EventsContext.Provider>
   );

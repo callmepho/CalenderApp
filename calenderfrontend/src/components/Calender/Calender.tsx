@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Cell } from "../Square/Cell";
 import { DropMenu } from "../DropMenu/DropMenu";
 import leftArrow from "./arrow-big-left-line.svg";
 import rightArrow from "./arrow-big-right-line.svg";
 import Image from "next/image";
-import { useDisclosure } from "@mantine/hooks";
+import { EventsContext } from "@/app/context/EventsContextProvider";
 
 export interface monthYear {
   year: number;
@@ -34,7 +34,7 @@ export const getMonthName = (month: number) => {
 export const Calender = () => {
   const [currentMonth, setCurrentMonth] = useState({ year: 2024, month: 0 });
   const [dayArray, setDayArray] = useState<(number | null)[]>([]);
-
+  const { dataError } = useContext(EventsContext);
   const nextMonth = () => {
     if (currentMonth.month == 11) {
       setCurrentMonth({ year: currentMonth.year + 1, month: 0 });
@@ -98,6 +98,7 @@ export const Calender = () => {
           />
         ))}
       </div>
+      <p className="text-red-500">{dataError && dataError.message}</p>
     </div>
   );
 };

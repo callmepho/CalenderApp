@@ -24,5 +24,5 @@ public class EventUpdateDTO {
 
 	@Getter
 	@Setter
-  private String label;
+  private Long labelId;
 }

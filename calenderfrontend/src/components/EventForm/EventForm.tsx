@@ -1,17 +1,23 @@
 import { useForm, yupResolver } from "@mantine/form";
 import * as yup from "yup";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Button, Input, TextInput } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
-import { Event, Events } from "../../../services/events";
+import { Event, EventCreateDTO, Events } from "../../../services/events";
+import { EventsContext } from "@/app/context/EventsContextProvider";
+import { AxiosError } from "axios";
+import { Label } from "../../../services/labels";
 
 export interface Day {
   day: number;
   month: number;
   year: number;
+  closeForm: () => void;
 }
 
-export const EventForm = ({ day, month, year }: Day) => {
+export const EventForm = ({ day, month, year, closeForm }: Day) => {
+  const { fetchData, labels } = useContext(EventsContext);
+  const [error, setError] = useState<AxiosError | null>(null);
   const schema = yup.object().shape({
     name: yup.string().required("Cannot be blank"),
     startDate: yup.date().required(),
@@ -20,7 +26,10 @@ export const EventForm = ({ day, month, year }: Day) => {
       .required()
       .min(yup.ref("startDate"), "End date must be after start date"),
     location: yup.string().required("Cannot be blank"),
-    label: yup.string().required("Cannot be blank"),
+    labelId: yup
+      .number()
+      .required("Cannot be blank")
+      .notOneOf([0], "Please select a valid label"),
   });
 
   const form = useForm({
@@ -30,7 +39,7 @@ export const EventForm = ({ day, month, year }: Day) => {
       startDate: new Date(year, month, day),
       endDate: new Date(year, month, day),
       location: "",
-      label: "",
+      labelId: 0,
     },
     validate: yupResolver(schema),
     enhanceGetInputProps: (payload) => ({
@@ -38,10 +47,16 @@ export const EventForm = ({ day, month, year }: Day) => {
     }),
   });
 
-  const formSubmit = async (data: Event) => {
+  const formSubmit = async (data: EventCreateDTO) => {
     await Events.create(data)
-      .then((response) => console.log(response))
-      .catch((e) => console.log(e));
+      .then(() => {
+        fetchData();
+        closeForm();
+      })
+      .catch((e) => {
+        console.log(e);
+        setError(e);
+      });
   };
 
   return (
@@ -73,15 +88,19 @@ export const EventForm = ({ day, month, year }: Day) => {
       <Input.Wrapper label="Label">
         <Input
           component="select"
-          key={form.key("label")}
-          {...form.getInputProps("label")}>
-          <option disabled></option>
-          <option value="label1">label1</option>
-          <option value="label2">label2</option>
-          <option value="label3">label3</option>
+          key={form.key("labelId")}
+          error={form.errors.labelId}
+          {...form.getInputProps("labelId")}>
+          <option disabled value={0}></option>
+          {labels.map((label: Label, idx: number) => (
+            <option key={`label${idx}`} value={label.id}>
+              {label.name}
+            </option>
+          ))}
         </Input>
       </Input.Wrapper>
       <Button type="submit">Submit</Button>
+      <p className="text-red-500">{error && `Error: ${error.message}`}</p>
     </form>
   );
 };
