@@ -17,7 +17,7 @@ public class Label {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-  @Column
+  @Column(unique = true)
 	@Getter
 	@Setter
   private String name;

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -29,6 +30,12 @@ public class LabelController {
   public ResponseEntity<List<Label>> getAll(){
     List<Label> allLabels = this.labelService.findAll();
     return new ResponseEntity<>(allLabels,HttpStatus.OK);
+  }
+
+  @GetMapping("/by-name")
+  public ResponseEntity<Label> getLabelByName(@RequestParam String name) {
+      Label label = labelService.getLabelByName(name);
+      return ResponseEntity.ok(label);
   }
 
   @PostMapping

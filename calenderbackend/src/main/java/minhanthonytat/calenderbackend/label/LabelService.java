@@ -12,7 +12,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class LabelService {  
   
-    @Autowired
+  @Autowired
   private LabelRepository labelRepository;
   
   public List<Label> findAll(){
@@ -28,8 +28,13 @@ public class LabelService {
     return false;
   }
 
-   public Label create(LabelCreateDTO data){
+  public Label create(LabelCreateDTO data){
     String name = data.getName();
+
+    if (labelRepository.existsByName(name)) {
+      throw new IllegalArgumentException("Label with name '" + name + "' already exists.");
+    }
+    
     Label newLabel = new Label(name);
     Label created = this.labelRepository.save(newLabel);
     return created;
@@ -39,4 +44,9 @@ public class LabelService {
     Optional<Label> foundLabel = this.labelRepository.findById(id);
     return foundLabel;
   }
+  
+  public Label getLabelByName(String name) {
+    return labelRepository.findByName(name)
+            .orElseThrow(() -> new IllegalArgumentException("Label not found with name: " + name));
+}
 }

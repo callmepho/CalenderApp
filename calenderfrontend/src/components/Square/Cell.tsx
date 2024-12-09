@@ -39,10 +39,7 @@ export const Cell = ({ day, month, year }: Day) => {
         }`}
         onClick={openEvent}>
         <h4>{day}</h4>
-        {currentEvents.length > 0 &&
-          currentEvents.map((event, idx) => (
-            <p key={event.name + idx}>{event.name}</p>
-          ))}
+        {currentEvents.length > 0 && <p>Events: {currentEvents.length}</p>}
       </div>
       {isValidDate && (
         <Modal opened={event} onClose={closeEvent} title="Event List" centered>

@@ -23,8 +23,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Next App Mantine Tailwind Template",
-  description: "Next App Mantine Tailwind Template",
+  title: "Calender App",
+  description: "Fullstack Calender App made by Minh Anthony Tat",
 };
 
 const theme = mergeMantineTheme(
