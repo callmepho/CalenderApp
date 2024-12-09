@@ -35,9 +35,11 @@ mvn spring-boot:run
 - [x] Basic backend for events
 - [x] Frontend modal for events
 - [ ] Calender view layout (week, year layout)
-- [ ] Add new labels
-- [ ] Color code labels
+- [x] Add new labels
+- [ ] Testing
 
 ### Current working on
 
-Creating new labels and adding entity for labels in spring
+~~Creating new labels and adding entity for labels in spring~~
+~~Add new label~~
+Calender layouts
