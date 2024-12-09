@@ -40,6 +40,6 @@ mvn spring-boot:run
 
 ### Current working on
 
-~~Creating new labels and adding entity for labels in spring~~
-~~Add new label~~
-Calender layouts
+- ~~Creating new labels and adding entity for labels in spring~~
+- ~~Add new label~~
+- Calender layouts
