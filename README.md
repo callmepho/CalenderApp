@@ -25,10 +25,11 @@ Running backend SpringBoot
 Navigate into calenderbackend folder
 Edit application.properties for your database
 
+```
 spring.datasource.url=jdbc:mysql://localhost:3306/"DB_NAME"
 spring.datasource.username="MYSQL_USERNAME"
 spring.datasource.password="MYSQL_PASSWORD"
-
+```
 
 Run commands:
 
