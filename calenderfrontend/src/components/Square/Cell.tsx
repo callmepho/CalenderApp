@@ -10,8 +10,9 @@ export interface Day {
   day: number | null;
   month: number | null;
   year: number | null;
+  currentDate: Date;
 }
-export const Cell = ({ day, month, year }: Day) => {
+export const Cell = ({ day, month, year, currentDate }: Day) => {
   const [form, { open: openForm, close: closeForm }] = useDisclosure(false);
   const [event, { open: openEvent, close: closeEvent }] = useDisclosure(false);
   const { events } = useContext(EventsContext);
@@ -31,10 +32,16 @@ export const Cell = ({ day, month, year }: Day) => {
   }, [day, month, year, events]);
 
   const isValidDate = day !== null && month !== null && year !== null;
+  const isCurrentDate =
+    day == currentDate.getDate() &&
+    month == currentDate.getMonth() &&
+    year == currentDate.getFullYear();
   return (
     <>
       <div
-        className={`aspect-square border border-sky-500 m-0 p-0 ${
+        className={`aspect-square border  ${
+          isCurrentDate ? "border-double border-8" : ""
+        } border-sky-500 m-0 p-0 ${
           isValidDate ? "cursor-pointer" : "opacity-50"
         }`}
         onClick={openEvent}>

@@ -13,6 +13,12 @@ export interface monthYear {
   month: number;
 }
 
+export interface DateObject {
+  year: number;
+  month: number;
+  day: number;
+}
+
 export const getMonthName = (month: number) => {
   const months = [
     "January",
@@ -32,7 +38,18 @@ export const getMonthName = (month: number) => {
 };
 
 export const Calender = () => {
-  const [currentMonth, setCurrentMonth] = useState({ year: 2024, month: 0 });
+  const getCurrentDate = () => {
+    const date = new Date();
+    return {
+      year: date.getFullYear(),
+      month: date.getMonth(),
+    };
+  };
+  const [currentMonth, setCurrentMonth] = useState<{
+    year: number;
+    month: number;
+  }>(getCurrentDate);
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [dayArray, setDayArray] = useState<(number | null)[]>([]);
   const { dataError } = useContext(EventsContext);
   const nextMonth = () => {
@@ -95,6 +112,7 @@ export const Calender = () => {
             key={idx + "cell"}
             month={currentMonth.month}
             year={currentMonth.year}
+            currentDate={currentDate}
           />
         ))}
       </div>
