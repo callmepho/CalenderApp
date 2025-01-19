@@ -23,6 +23,14 @@ npm run start
 
 Running backend SpringBoot
 Navigate into calenderbackend folder
+Edit application.properties for your database
+
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/"DB_NAME"
+spring.datasource.username="MYSQL_USERNAME"
+spring.datasource.password="MYSQL_PASSWORD"
+```
+
 Run commands:
 
 ```
@@ -40,6 +48,6 @@ mvn spring-boot:run
 
 ### Current working on
 
-~~Creating new labels and adding entity for labels in spring~~
-~~Add new label~~
-Calender layouts
+- ~~Creating new labels and adding entity for labels in spring~~
+- ~~Add new label~~
+- Calender layouts
